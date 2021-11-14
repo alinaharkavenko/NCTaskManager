@@ -14,20 +14,26 @@ public class Task {
      * Конструктор, що конструює неактивну задачу, яка
      * виконується у заданий час без повторення із заданою назвою.
      */
-    public Task(String title, int time) {
+    public Task(String title, int time) throws IllegalArgumentException {
+        if( time < 0 ){
+            throw new IllegalArgumentException();
+        }
         this.title = title;
         this.time = time;
         active = false;
         repeated = false;
-    }
 
+    }
 
     /**
      * Конструктор, що конструює неактивну задачу, яка виконується у заданому
      * проміжку часу (і початок і кінець включно) із
      * заданим інтервалом і має задану назву.
      */
-    public Task(String title, int start, int end, int interval) {
+    public Task(String title, int start, int end, int interval) throws IllegalArgumentException {
+        if( start < 0 || end < 0 || interval < 0){
+            throw new IllegalArgumentException();
+        }
         this.title = title;
         this.start = start;
         this.end = end;
@@ -135,6 +141,9 @@ public class Task {
      */
 
     public int nextTimeAfter(int current) {
+        if (current < 0){
+            throw new IllegalArgumentException();
+        }
         if (!isActive()) {
             return -1;
         } else {
