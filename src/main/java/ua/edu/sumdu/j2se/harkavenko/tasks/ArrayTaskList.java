@@ -1,12 +1,12 @@
 package ua.edu.sumdu.j2se.harkavenko.tasks;
 
-public class ArrayTaskList {
-    private int size = 0;
+public class ArrayTaskList extends AbstractTaskList{
     private Task[] array = new Task[5];
 
     /**
      *  метод, що додає до списку вказану задачу
      */
+    @Override
     public void add(Task task){
         if( task == null){
             throw new NullPointerException();
@@ -24,6 +24,7 @@ public class ArrayTaskList {
      *     така задача була у списку. Якщо у списку було декілька таких задач, необхідно видалити одну
      *     будь-яку.
      */
+    @Override
     public boolean remove(Task task){
         for(int i = 0; i<size; i++){
             if(task == array[i]){
@@ -39,16 +40,12 @@ public class ArrayTaskList {
         }
         return false;
     }
-    /**
-     *  метод, що повертає кількість задач у списку
-     */
-    public int size(){
-        return size;
-    }
+
     /**
      *      метод, що повертає задачу, яка знаходиться на вказаному місці у
      *     списку, перша задача має індекс 0.
      */
+    @Override
     public Task getTask(int index){
         if ( index >= size || index < 0){
             throw new IndexOutOfBoundsException();
@@ -59,6 +56,7 @@ public class ArrayTaskList {
      * метод, що повертає підмножину задач, які заплановані на виконання хоча б раз
      * після часу from і не пізніше ніж to.
      */
+    @Override
     public ArrayTaskList incoming(int from, int to){
         ArrayTaskList arr = new ArrayTaskList();
         for( int i = 0; i < size; i++){
