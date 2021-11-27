@@ -1,7 +1,9 @@
 package ua.edu.sumdu.j2se.harkavenko.tasks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public class ArrayTaskList extends AbstractTaskList{
     private Task[] array = new Task[5];
@@ -55,6 +57,16 @@ public class ArrayTaskList extends AbstractTaskList{
         }
         return array[index];
     }
+
+    @Override
+    public Stream<Task> getStream() {
+        ArrayList<Task> arrayList = new ArrayList<>();
+        for(int i = 0; i < size; i++){
+            arrayList.add(this.getTask(i));
+        }
+        return arrayList.stream();
+    }
+
     /**
      * метод, що повертає підмножину задач, які заплановані на виконання хоча б раз
      * після часу from і не пізніше ніж to.

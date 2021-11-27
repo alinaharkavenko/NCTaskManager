@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2se.harkavenko.tasks;
 
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public abstract class AbstractTaskList implements Iterable, Cloneable{
     protected int size = 0;
@@ -11,16 +12,18 @@ public abstract class AbstractTaskList implements Iterable, Cloneable{
         return  size;
     }
     public abstract Task getTask(int index);
-    public AbstractTaskList incoming(int from, int to){
+
+    public abstract Stream<Task> getStream();
+
+    public final AbstractTaskList incoming(int from, int to){
             AbstractTaskList abstr = new LinkedTaskList();
-            Iterator<Task> iter = this.iterator();
-            while (iter.hasNext()) {
-                Task iterTask = iter.next();
-                int time = iterTask.nextTimeAfter(from);
-                if(time <= to && time > from){
-                    abstr.add(iterTask) ;
-                }
-            }
+            Stream<Task> str = getStream();
+            str.forEach( a-> {
+                int time = a.nextTimeAfter(from);
+                if( time <= to && time >from ) {
+                    abstr.add(a);
+                } 
+            });
             return abstr;
     }
     public AbstractTaskList clone(){

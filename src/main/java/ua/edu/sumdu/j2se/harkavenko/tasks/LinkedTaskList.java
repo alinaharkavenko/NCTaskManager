@@ -1,7 +1,10 @@
 package ua.edu.sumdu.j2se.harkavenko.tasks;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class LinkedTaskList extends AbstractTaskList{
     private Element element = null;
@@ -158,6 +161,13 @@ public class LinkedTaskList extends AbstractTaskList{
         }
         return  name;
     }
-
+    @Override
+    public Stream<Task> getStream() {
+        LinkedList<Task> linkList = new LinkedList<>();
+        for(int i = 0; i < size; i++){
+            linkList.add(this.getTask(i));
+        }
+        return linkList.stream();
+    }
 }
 
