@@ -1,7 +1,12 @@
 package ua.edu.sumdu.j2se.harkavenko.tasks;
 
+import java.util.Iterator;
+import java.util.Objects;
+
 public class LinkedTaskList extends AbstractTaskList{
     private Element element = null;
+
+
 
     public class Element {
         private Task task;
@@ -76,7 +81,7 @@ public class LinkedTaskList extends AbstractTaskList{
      * метод, що повертає підмножину задач, які заплановані на виконання хоча б раз
      * після часу from і не пізніше ніж to.
      */
-    @Override
+   /*@Override
     public LinkedTaskList incoming(int from, int to){
         LinkedTaskList arr = new LinkedTaskList();
         Element marker = element;
@@ -89,6 +94,70 @@ public class LinkedTaskList extends AbstractTaskList{
         }
         return arr;
     }
-}
+*/
 
+    @Override
+    public Iterator<Task> iterator() {
+        return new Iterator<Task>() {
+            private Element current = element;
+            private Element previous = null;
+
+            @Override
+            public boolean hasNext() {
+                return current!= null;
+            }
+
+            @Override
+            public Task next() {
+                previous = current;
+                current= current.element1;
+                return previous.task;
+            }
+
+            @Override
+            public void remove(){
+                if(previous != null){
+                    LinkedTaskList.this.remove(previous.task);
+                    previous = null;
+                }else throw new IllegalStateException();
+
+            }
+
+        };
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LinkedTaskList that = (LinkedTaskList) o;
+        int counter=0;
+        for(int i = 0; i < size; i++) {
+            if (getTask(i).equals(that.getTask(i))) {
+                counter++;
+            }
+        }
+        return size == counter;
+    }
+
+    @Override
+    public int hashCode() {
+        int hashCode = 0;
+        for (int i = 0; i < size; i++) {
+            hashCode += getTask(i).hashCode();
+        }
+        return hashCode;
+    }
+
+    @Override
+    public String toString() {
+        String name = "LinkedTaskList{";
+        for (int i = 0; i < size; i++) {
+            name += getTask(i).toString() + "/";
+        }
+        return  name;
+    }
+
+}
 

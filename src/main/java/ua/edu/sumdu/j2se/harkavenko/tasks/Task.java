@@ -1,7 +1,9 @@
 package ua.edu.sumdu.j2se.harkavenko.tasks;
 
 
-public class Task {
+import java.util.Objects;
+
+public class Task implements Cloneable{
     private String title;
     private int time;
     private int start;
@@ -161,5 +163,53 @@ public class Task {
             }
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return time == task.time &&
+                start == task.start &&
+                end == task.end &&
+                interval == task.interval &&
+                active == task.active &&
+                repeated == task.repeated &&
+                title.equals(task.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, time, start, end, interval, active, repeated);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", time=" + time +
+                ", start=" + start +
+                ", end=" + end +
+                ", interval=" + interval +
+                ", active=" + active +
+                ", repeated=" + repeated +
+                '}';
+    }
+
+    @Override
+    public Task clone(){
+        Task clonTask = new Task(title, time);
+        clonTask.start = this.start;
+        clonTask.end = this.end;
+        clonTask.interval = this.interval;
+        clonTask.active = this.active;
+        clonTask.repeated = this.repeated;
+        return clonTask;
+
+    }
+
+
+
+
 }
 

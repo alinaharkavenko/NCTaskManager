@@ -1,5 +1,8 @@
 package ua.edu.sumdu.j2se.harkavenko.tasks;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 public class ArrayTaskList extends AbstractTaskList{
     private Task[] array = new Task[5];
 
@@ -56,7 +59,7 @@ public class ArrayTaskList extends AbstractTaskList{
      * метод, що повертає підмножину задач, які заплановані на виконання хоча б раз
      * після часу from і не пізніше ніж to.
      */
-    @Override
+   /* @Override
     public ArrayTaskList incoming(int from, int to){
         ArrayTaskList arr = new ArrayTaskList();
         for( int i = 0; i < size; i++){
@@ -67,5 +70,52 @@ public class ArrayTaskList extends AbstractTaskList{
             }
         }
         return arr;
+    }
+*/
+    @Override
+    public Iterator<Task> iterator() {
+        return new Iterator<Task>() {
+            private int index = 0;
+            @Override
+            public boolean hasNext() {
+                return index < size;
+            }
+
+            @Override
+            public Task next() {
+                index++;
+                return array[index-1];
+            }
+
+            @Override
+            public void remove(){
+                if(index > 0){
+                    index--;
+                    ArrayTaskList.this.remove(array[index]);
+
+                }else throw new IllegalStateException();
+
+            }
+        };
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ArrayTaskList that = (ArrayTaskList) o;
+        return Arrays.equals(array, that.array);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(array);
+    }
+
+    @Override
+    public String toString() {
+        return "ArrayTaskList{" +
+                "array=" + Arrays.toString(array) +
+                '}';
     }
 }
