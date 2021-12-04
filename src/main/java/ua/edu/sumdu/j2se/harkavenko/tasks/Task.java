@@ -1,13 +1,14 @@
 package ua.edu.sumdu.j2se.harkavenko.tasks;
 
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task implements Cloneable{
     private String title;
-    private int time;
-    private int start;
-    private int end;
+    private LocalDateTime time;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private int interval;
     private boolean active;
     private boolean repeated;
@@ -16,12 +17,12 @@ public class Task implements Cloneable{
      * Конструктор, що конструює неактивну задачу, яка
      * виконується у заданий час без повторення із заданою назвою.
      */
-    public Task(String title, int time) throws IllegalArgumentException {
-        if( time < 0 ){
+    public Task(String title, LocalDateTime time) throws IllegalArgumentException {
+        if( time == null ){
             throw new IllegalArgumentException();
         }
         this.title = title;
-        this.time = time;
+        this.time = LocalDateTime.of(time.toLocalDate(),time.toLocalTime());
         active = false;
         repeated = false;
 
@@ -32,13 +33,13 @@ public class Task implements Cloneable{
      * проміжку часу (і початок і кінець включно) із
      * заданим інтервалом і має задану назву.
      */
-    public Task(String title, int start, int end, int interval) throws IllegalArgumentException {
-        if( start < 0 || end < 0 || interval < 0){
+    public Task(String title, LocalDateTime start, LocalDateTime end, int interval) throws IllegalArgumentException {
+        if( start == null || end == null || interval < 0){
             throw new IllegalArgumentException();
         }
         this.title = title;
-        this.start = start;
-        this.end = end;
+        this.start = LocalDateTime.of(start.toLocalDate(),start.toLocalTime());;
+        this.end = LocalDateTime.of(end.toLocalDate(),end.toLocalTime());;
         this.interval = interval;
         active = false;
         repeated = true;
@@ -76,7 +77,7 @@ public class Task implements Cloneable{
      * Метод для зчитування та зміни часу виконання для задач, що не повторюються, у разі,
      * якщо задача повторюється метод має повертати час початку повторення;
      */
-    public int getTime() {
+    public LocalDateTime getTime() {
         return isRepeated() ? start : time;
 
     }
@@ -85,18 +86,18 @@ public class Task implements Cloneable{
      * Метод для зчитування та зміни часу виконання для задач, що не повторюються, у разі,
      * якщо задача повторювалась, вона має стати такою, що не повторюється
      */
-    public void setTime(int time) {
+    public void setTime(LocalDateTime time) {
         if (isRepeated()) {
             repeated = false;
         }
-        this.time = time;
+        this.time = LocalDateTime.of(time.toLocalDate(),time.toLocalTime());
     }
 
     /**
      * Метод для зчитування та зміни часу виконання для задач, що  повторюються, у разі,
      * якщо задача не повторюється метод має повертати час виконання задачі;
      */
-    public int getStartTime() {
+    public LocalDateTime getStartTime() {
         return isRepeated() ? start : time;
     }
 
@@ -104,7 +105,7 @@ public class Task implements Cloneable{
      * Метод для зчитування та зміни часу виконання для задач, що  повторюються, у разі,
      * якщо задача не повторюється метод має повертати час виконання задачі;
      */
-    public int getEndTime() {
+    public LocalDateTime getEndTime() {
         return isRepeated() ? end : time;
     }
 
@@ -120,12 +121,12 @@ public class Task implements Cloneable{
      * Метод для зчитування та зміни часу виконання для задач, що  повторюються, у разі,
      * якщо задача не повторювалася метод має стати таким, що повторюється.
      */
-    public void setTime(int start, int end, int interval) {
+    public void setTime(LocalDateTime start, LocalDateTime end, int interval) {
         if (!isRepeated()) {
             repeated = true;
         }
-        this.start = start;
-        this.end = end;
+        this.start = LocalDateTime.of(start.toLocalDate(),start.toLocalTime());
+        this.end = LocalDateTime.of(end.toLocalDate(),end.toLocalTime());
         this.interval = interval;
     }
 
@@ -142,19 +143,19 @@ public class Task implements Cloneable{
      * метод має повертати -1.
      */
 
-    public int nextTimeAfter(int current) {
-        if (current < 0){
+    public LocalDateTime nextTimeAfter(LocalDateTime current) {
+        if (current == null){
             throw new IllegalArgumentException();
         }
         if (!isActive()) {
-            return -1;
+            return null;
         } else {
             if (!isRepeated()) {
-                return (current >= time) ? -1 : time;
+                return (!current.isBefore(time) ) ? null : time;
             } else {
-                int nextTime = -1;
-                for (int i = start; i < end; i = i + interval) {
-                    if (current < i) {
+                LocalDateTime nextTime = null;
+                for (LocalDateTime i = start; !i.isAfter(end) ; i = i.plusSeconds(interval)) {
+                    if (current.isBefore(i)) {
                         nextTime = i;
                         return nextTime;
                     }

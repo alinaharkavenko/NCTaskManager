@@ -15,17 +15,18 @@ public abstract class AbstractTaskList implements Iterable, Cloneable{
 
     public abstract Stream<Task> getStream();
 
-    public final AbstractTaskList incoming(int from, int to){
+    /*public final AbstractTaskList incoming(int from, int to){
             AbstractTaskList abstr = new LinkedTaskList();
             Stream<Task> str = getStream();
             str.forEach( a-> {
                 int time = a.nextTimeAfter(from);
                 if( time <= to && time >from ) {
                     abstr.add(a);
-                } 
+                }
             });
             return abstr;
-    }
+    }*/
+
     public AbstractTaskList clone(){
         AbstractTaskList absList;
         if(this instanceof ArrayTaskList){
