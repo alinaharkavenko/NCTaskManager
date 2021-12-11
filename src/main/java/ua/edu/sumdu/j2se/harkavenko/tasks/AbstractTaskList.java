@@ -1,9 +1,10 @@
 package ua.edu.sumdu.j2se.harkavenko.tasks;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-public abstract class AbstractTaskList implements Iterable, Cloneable{
+public abstract class AbstractTaskList implements Iterable, Cloneable, Serializable {
     protected int size = 0;
 
     public abstract void add(Task task);
