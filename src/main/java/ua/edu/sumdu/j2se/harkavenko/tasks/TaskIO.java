@@ -99,7 +99,7 @@ public class TaskIO {
             e.printStackTrace();
         }
     }
-    
+
     public static void read(AbstractTaskList tasks, Reader in){
         Gson g = new Gson();
         ArrayTaskList a = g.fromJson(in, ArrayTaskList.class);
